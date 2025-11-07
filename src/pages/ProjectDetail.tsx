@@ -3,6 +3,8 @@ import { useParams, Link } from "react-router-dom";
 import { MapPin, Calendar, ArrowLeft, Tag } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import FloatingCalculatorButton from "@/components/FloatingCalculatorButton";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { ImageLightbox } from "@/components/ImageLightbox";
 import { fetchProjectBySlug } from "@/utils/api";
 import { Project } from "@/types/project";
@@ -139,6 +141,9 @@ const ProjectDetail = () => {
       />
 
       <Footer />
+      
+      <FloatingCalculatorButton />
+      <WhatsAppButton />
     </div>
   );
 };

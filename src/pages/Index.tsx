@@ -6,7 +6,8 @@ import Footer from "@/components/Footer";
 import GoogleMap from "@/components/GoogleMap";
 import TestimonialSlider from "@/components/TestimonialSlider";
 import ProjectSlider from "@/components/ProjectSlider";
-import ScrollToTop from "@/components/ScrollToTop";
+import FloatingCalculatorButton from "@/components/FloatingCalculatorButton";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { fetchPricingPlans, fetchProjects } from "@/utils/api";
 import { PricingPlan } from "@/types/pricing";
 import { Project } from "@/types/project";
@@ -425,21 +426,8 @@ const Index = () => {
 
       <Footer />
       
-      {/* Floating Calculator Button */}
-      <Link 
-        to="/calculator"
-        className="fixed left-4 bottom-4 sm:left-6 sm:bottom-6 z-50 group"
-      >
-        <div className="relative">
-          <div className="absolute inset-0 bg-gradient-primary rounded-full blur-xl opacity-50 group-hover:opacity-75 transition-opacity duration-300 animate-pulse" />
-          <button className="relative w-12 h-12 sm:w-14 sm:h-14 bg-gradient-primary rounded-full flex items-center justify-center shadow-glow hover:shadow-2xl transition-all duration-300 transform group-hover:scale-110">
-            <Calculator className="text-background" size={20} />
-          </button>
-        </div>
-      </Link>
-
-      {/* Scroll to Top Button */}
-      <ScrollToTop />
+      <FloatingCalculatorButton />
+      <WhatsAppButton />
     </div>
   );
 };

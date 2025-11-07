@@ -1,6 +1,8 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { ImageLightbox } from "@/components/ImageLightbox";
+import FloatingCalculatorButton from "@/components/FloatingCalculatorButton";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { fetchPricingPlans } from "@/utils/api";
 
 const Advanced = () => {
@@ -102,6 +104,9 @@ const Advanced = () => {
         isOpen={lightboxOpen}
         onClose={() => setLightboxOpen(false)}
       />
+      
+      <FloatingCalculatorButton />
+      <WhatsAppButton />
     </div>
   );
 };

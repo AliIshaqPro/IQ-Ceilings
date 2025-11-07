@@ -1,5 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import FloatingCalculatorButton from "@/components/FloatingCalculatorButton";
+import WhatsAppButton from "@/components/WhatsAppButton";
 
 const NotFound = () => {
   const location = useLocation();
@@ -17,6 +19,9 @@ const NotFound = () => {
           Return to Home
         </a>
       </div>
+      
+      <FloatingCalculatorButton />
+      <WhatsAppButton />
     </div>
   );
 };

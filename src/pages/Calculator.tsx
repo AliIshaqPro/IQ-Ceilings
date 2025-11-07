@@ -2,6 +2,8 @@ import { useState, useEffect, useRef } from "react";
 import { Calculator as CalcIcon, Plus, Minus } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import StickyCalculation from "@/components/StickyCalculation";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -193,6 +195,13 @@ const Calculator = () => {
     <div className="min-h-screen bg-gradient-dark">
       <Header />
       
+      <StickyCalculation 
+        totalArea={totalArea}
+        essentialCost={essentialCost}
+        premiumCost={premiumCost}
+        luxuryCost={luxuryCost}
+      />
+      
       <div className="relative py-24 px-6 pt-32">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-12">
@@ -347,6 +356,8 @@ const Calculator = () => {
       </div>
 
       <Footer />
+      
+      <WhatsAppButton />
     </div>
   );
 };

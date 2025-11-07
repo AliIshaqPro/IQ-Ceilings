@@ -3,6 +3,8 @@ import { Link } from "react-router-dom";
 import { MapPin, Calendar } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
+import FloatingCalculatorButton from "@/components/FloatingCalculatorButton";
+import WhatsAppButton from "@/components/WhatsAppButton";
 import { fetchProjects } from "@/utils/api";
 import { Project } from "@/types/project";
 
@@ -107,6 +109,9 @@ const Projects = () => {
       </div>
 
       <Footer />
+      
+      <FloatingCalculatorButton />
+      <WhatsAppButton />
     </div>
   );
 };
