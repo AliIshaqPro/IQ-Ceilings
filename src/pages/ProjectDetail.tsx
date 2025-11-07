@@ -60,11 +60,11 @@ const ProjectDetail = () => {
   const images = project.acf?.project_images?.map(img => img.url) || [];
 
   return (
-    <div className="min-h-screen bg-gradient-dark">
+    <div className="min-h-screen bg-gradient-dark overflow-x-hidden">
       <Header />
       
-      <div className="relative pt-32 pb-24 px-6">
-        <div className="max-w-6xl mx-auto">
+      <div className="relative pt-32 pb-24 px-4 sm:px-6">
+        <div className="max-w-6xl mx-auto w-full">
           <Link to="/projects" className="inline-flex items-center gap-2 text-primary hover:text-primary/80 transition-colors mb-8">
             <ArrowLeft size={20} />
             <span>Back to Projects</span>
@@ -106,7 +106,7 @@ const ProjectDetail = () => {
           </div>
 
           {images.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full">
               {images.map((imageUrl, index) => (
                 <div
                   key={index}
@@ -114,7 +114,7 @@ const ProjectDetail = () => {
                     setSelectedImageIndex(index);
                     setLightboxOpen(true);
                   }}
-                  className="relative aspect-square overflow-hidden rounded-2xl border border-border hover:border-primary/50 transition-all duration-300 cursor-pointer group"
+                  className="relative aspect-square overflow-hidden rounded-2xl border border-border hover:border-primary/50 transition-all duration-300 cursor-pointer group w-full"
                 >
                   <img
                     src={imageUrl}

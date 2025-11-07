@@ -124,9 +124,9 @@ const Index = () => {
                   className="group"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className="relative overflow-hidden bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl transition-all duration-500 hover:border-primary/50 hover:shadow-glow animate-scale-in h-full flex flex-col">
+                  <div className="relative overflow-hidden bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl transition-all duration-500 hover:border-primary/50 hover:shadow-glow animate-scale-in h-full flex flex-col min-h-[400px] sm:min-h-[420px]">
                     {/* Image Section with Overlay */}
-                    <div className="relative h-44 sm:h-52 md:h-80 overflow-hidden">
+                    <div className="relative h-48 sm:h-52 md:h-80 overflow-hidden">
                       <img 
                         src={getImageForPlan(plan)} 
                         alt={`${plan.title} ceiling designs`}

@@ -31,7 +31,7 @@ const Advanced = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-dark relative">
+    <div className="min-h-screen bg-gradient-dark relative overflow-x-hidden">
       {/* Ambient effects */}
       <div className="absolute top-0 right-1/4 w-96 h-96 bg-primary/5 rounded-full blur-3xl" />
       <div className="absolute bottom-0 left-1/4 w-96 h-96 bg-accent/5 rounded-full blur-3xl" />
@@ -56,9 +56,9 @@ const Advanced = () => {
         <span className="text-sm font-medium">Back</span>
       </Link>
 
-      <div className="relative container mx-auto px-6 py-24">
+      <div className="relative container mx-auto px-4 sm:px-6 py-24 w-full">
         <div className="text-center mb-16 animate-fade-in">
-          <h1 className="font-display text-6xl md:text-7xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-4">
+          <h1 className="font-display text-4xl sm:text-6xl md:text-7xl font-bold bg-gradient-primary bg-clip-text text-transparent mb-4">
             {title}
           </h1>
           <div className="flex items-center justify-center gap-3">
@@ -71,7 +71,7 @@ const Advanced = () => {
         {loading ? (
           <div className="text-center text-muted-foreground">Loading...</div>
         ) : (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6 w-full">
             {images.map((image, index) => (
             <div
               key={index}

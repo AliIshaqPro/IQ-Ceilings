@@ -40,14 +40,18 @@ const Header = () => {
               <Link
                 key={link.path}
                 to={link.path}
-                className="relative text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-300 group py-2"
+                className="relative text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-500 group py-2 px-1"
                 style={{ animationDelay: `${index * 50}ms` }}
               >
-                <span className="relative z-10">{link.name}</span>
-                {/* Animated underline */}
-                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-primary group-hover:w-full transition-all duration-300 rounded-full" />
-                {/* Hover glow */}
-                <span className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-10 blur-xl transition-opacity duration-300 rounded-lg" />
+                <span className="relative z-10 transform group-hover:scale-110 transition-transform duration-300 inline-block">{link.name}</span>
+                {/* Animated underline with glow */}
+                <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-primary group-hover:w-full transition-all duration-500 rounded-full shadow-[0_0_10px_rgba(var(--primary),0.5)]" />
+                {/* Hover glow effect */}
+                <span className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-20 blur-2xl transition-all duration-500 rounded-lg scale-0 group-hover:scale-100" />
+                {/* Shine effect */}
+                <span className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700">
+                  <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                </span>
               </Link>
             ))}
             
@@ -89,11 +93,13 @@ const Header = () => {
                   key={link.path}
                   to={link.path}
                   onClick={() => setIsOpen(false)}
-                  className="block py-2.5 px-4 text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-300 rounded-lg hover:bg-primary/5 relative group"
+                  className="block py-3 px-4 text-sm font-medium text-muted-foreground hover:text-foreground transition-all duration-500 rounded-xl hover:bg-primary/10 relative group overflow-hidden"
                   style={{ animationDelay: `${index * 50}ms` }}
                 >
-                  <span className="relative z-10">{link.name}</span>
-                  <span className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-5 rounded-lg transition-opacity duration-300" />
+                  <span className="relative z-10 transform group-hover:translate-x-1 transition-transform duration-300 inline-block">{link.name}</span>
+                  <span className="absolute inset-0 bg-gradient-primary opacity-0 group-hover:opacity-10 rounded-xl transition-all duration-500 scale-0 group-hover:scale-100" />
+                  {/* Slide-in effect */}
+                  <span className="absolute left-0 top-0 bottom-0 w-1 bg-gradient-primary transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300 rounded-r" />
                 </Link>
               ))}
               

@@ -27,11 +27,11 @@ const Projects = () => {
   }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-dark">
+    <div className="min-h-screen bg-gradient-dark overflow-x-hidden">
       <Header />
       
-      <div className="relative pt-32 pb-24 px-6">
-        <div className="max-w-7xl mx-auto">
+      <div className="relative pt-32 pb-24 px-4 sm:px-6">
+        <div className="max-w-7xl mx-auto w-full">
           <div className="text-center mb-16">
             <h1 className="font-display text-4xl md:text-6xl font-bold text-foreground mb-6">
               Our <span className="bg-gradient-primary bg-clip-text text-transparent">Projects</span>
@@ -45,16 +45,16 @@ const Projects = () => {
           {loading ? (
             <div className="text-center text-muted-foreground py-12">Loading projects...</div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 w-full">
               {projects.map((project, index) => (
                 <Link
                   key={project.id}
                   to={`/projects/${project.slug}`}
-                  className="group"
+                  className="group w-full"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <div className="relative overflow-hidden bg-card border border-border rounded-2xl transition-all duration-500 hover:border-primary/50 hover:shadow-glow animate-scale-in h-full">
-                    <div className="relative h-64 overflow-hidden bg-muted">
+                  <div className="relative overflow-hidden bg-card border border-border rounded-2xl transition-all duration-500 hover:border-primary/50 hover:shadow-glow animate-scale-in h-full min-h-[420px] sm:min-h-[380px]">
+                    <div className="relative h-48 sm:h-64 overflow-hidden bg-muted">
                       {project.acf?.project_images?.[0]?.url ? (
                         <img 
                           src={project.acf.project_images[0].url} 
