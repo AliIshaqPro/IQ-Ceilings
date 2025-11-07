@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { Menu, X, Sparkles } from "lucide-react";
+import { Menu, X, Calculator } from "lucide-react";
 import { useState } from "react";
 import logo from "@/assets/logo.png";
 
@@ -51,23 +51,21 @@ const Header = () => {
               </Link>
             ))}
             
-            {/* Futuristic WhatsApp Button */}
-            <a
-              href="https://wa.me/923458783923"
-              target="_blank"
-              rel="noopener noreferrer"
+            {/* Calculator Button */}
+            <Link
+              to="/calculator"
               className="relative group px-5 py-2.5 rounded-full overflow-hidden"
             >
               {/* Animated background */}
-              <div className="absolute inset-0 bg-gradient-to-r from-[#25D366] to-[#20bd5a] transition-transform duration-300 group-hover:scale-105" />
-              <div className="absolute inset-0 bg-gradient-to-r from-[#25D366]/0 via-white/20 to-[#25D366]/0 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
+              <div className="absolute inset-0 bg-gradient-primary transition-transform duration-300 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
               
               {/* Button content */}
-              <span className="relative z-10 text-white font-medium text-sm flex items-center gap-2">
-                <Sparkles size={16} className="animate-pulse" />
-                WhatsApp Us
+              <span className="relative z-10 text-background font-medium text-sm flex items-center gap-2">
+                <Calculator size={16} className="animate-pulse" />
+                Calculator
               </span>
-            </a>
+            </Link>
           </div>
 
           {/* Mobile Menu Button with futuristic design */}
@@ -99,20 +97,18 @@ const Header = () => {
                 </Link>
               ))}
               
-              <a
-                href="https://wa.me/923458783923"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                to="/calculator"
                 onClick={() => setIsOpen(false)}
                 className="relative group block w-full px-5 py-3 rounded-xl overflow-hidden mt-4"
               >
-                <div className="absolute inset-0 bg-gradient-to-r from-[#25D366] to-[#20bd5a]" />
-                <div className="absolute inset-0 bg-gradient-to-r from-[#25D366]/0 via-white/20 to-[#25D366]/0 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
-                <span className="relative z-10 text-white font-medium text-sm text-center flex items-center justify-center gap-2">
-                  <Sparkles size={16} className="animate-pulse" />
-                  WhatsApp Us
+                <div className="absolute inset-0 bg-gradient-primary" />
+                <div className="absolute inset-0 bg-gradient-to-r from-primary/0 via-white/20 to-primary/0 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
+                <span className="relative z-10 text-background font-medium text-sm text-center flex items-center justify-center gap-2">
+                  <Calculator size={16} className="animate-pulse" />
+                  Calculator
                 </span>
-              </a>
+              </Link>
             </div>
           </div>
         )}

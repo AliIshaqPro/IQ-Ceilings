@@ -35,10 +35,10 @@ const Calculator = () => {
     if (!canvasRef.current) return;
 
     const canvas = new FabricCanvas(canvasRef.current, {
-      width: 500,
-      height: 400,
+      width: 600,
+      height: 450,
       backgroundColor: "#f8f9fa",
-      selection: false,
+      selection: true,
     });
 
     setFabricCanvas(canvas);
@@ -63,8 +63,8 @@ const Calculator = () => {
 
     // Scale to fit canvas (with padding)
     const padding = 40;
-    const maxWidth = 500 - padding * 2;
-    const maxHeight = 400 - padding * 2;
+    const maxWidth = 600 - padding * 2;
+    const maxHeight = 450 - padding * 2;
     const scale = Math.min(maxWidth / l, maxHeight / w);
 
     const scaledLength = l * scale;
@@ -139,7 +139,7 @@ const Calculator = () => {
         fill: drawMode === "add" ? "rgba(34, 197, 94, 0.3)" : "rgba(239, 68, 68, 0.3)",
         stroke: drawMode === "add" ? "#22c55e" : "#ef4444",
         strokeWidth: 2,
-        selectable: false,
+        selectable: true,
       });
 
       if (width < 0) tempRectRef.current.left = e.pointer.x;
@@ -159,8 +159,8 @@ const Calculator = () => {
       const l = parseFloat(length) || 0;
       const w = parseFloat(width) || 0;
       const padding = 40;
-      const maxWidth = 500 - padding * 2;
-      const maxHeight = 400 - padding * 2;
+      const maxWidth = 600 - padding * 2;
+      const maxHeight = 450 - padding * 2;
       const scale = Math.min(maxWidth / l, maxHeight / w);
 
       const areaInFeet = (drawnWidth / scale) * (drawnHeight / scale);
@@ -315,8 +315,8 @@ const Calculator = () => {
                     </Button>
                   </div>
 
-                  <div className="border border-border rounded-lg overflow-hidden bg-muted/20">
-                    <canvas ref={canvasRef} />
+                  <div className="border border-border rounded-lg overflow-hidden bg-muted/20 w-full flex justify-center">
+                    <canvas ref={canvasRef} className="max-w-full h-auto" />
                   </div>
 
                   {drawMode && (
