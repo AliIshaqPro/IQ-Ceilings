@@ -15,7 +15,7 @@ import team1 from "@/assets/advanced-1.jpg";
 import team2 from "@/assets/advanced-2.jpg";
 import team3 from "@/assets/advanced-3.jpg";
 import team4 from "@/assets/medium-4.jpg";
-import luxuryHero from "@/assets/luxury-hero.jpg";
+import luxuryHero from "@/assets/luxury-hero.jpeg";
 import premiumHero from "@/assets/premium-hero.jpg";
 import essentialHero from "@/assets/essential-hero.jpg";
 
@@ -125,7 +125,7 @@ const Index = () => {
                 >
                   <div className="relative overflow-hidden bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl transition-all duration-500 hover:border-primary/50 hover:shadow-glow animate-scale-in h-full flex flex-col">
                     {/* Image Section with Overlay */}
-                    <div className="relative h-44 sm:h-52 md:h-60 overflow-hidden">
+                    <div className="relative h-44 sm:h-52 md:h-80 overflow-hidden">
                       <img 
                         src={getImageForPlan(plan)} 
                         alt={`${plan.title} ceiling designs`}

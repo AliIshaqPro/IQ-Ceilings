@@ -1,37 +1,193 @@
-import { useState } from "react";
-import { Calculator as CalcIcon } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Calculator as CalcIcon, Plus, Minus } from "lucide-react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Canvas as FabricCanvas, Rect, Text } from "fabric";
+import { toast } from "sonner";
 
 const Calculator = () => {
-  const [wall1, setWall1] = useState("");
-  const [wall2, setWall2] = useState("");
-  const [wall3, setWall3] = useState("");
-  const [wall4, setWall4] = useState("");
+  const [length, setLength] = useState("");
+  const [width, setWidth] = useState("");
+  const [drawMode, setDrawMode] = useState<"add" | "remove" | null>(null);
+  const [additionalAreas, setAdditionalAreas] = useState<number[]>([]);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [fabricCanvas, setFabricCanvas] = useState<FabricCanvas | null>(null);
+  const isDrawingRef = useRef(false);
+  const startPointRef = useRef<{ x: number; y: number } | null>(null);
+  const tempRectRef = useRef<Rect | null>(null);
 
-  // Calculate area using the Shoelace formula for irregular quadrilaterals
-  const calculateArea = () => {
-    const w1 = parseFloat(wall1) || 0;
-    const w2 = parseFloat(wall2) || 0;
-    const w3 = parseFloat(wall3) || 0;
-    const w4 = parseFloat(wall4) || 0;
-    
-    // For a room with walls w1, w2, w3, w4
-    // We treat it as a quadrilateral and use the formula for area
-    // This assumes the room forms a closed shape
-    // Simple approximation: we'll use opposite walls
-    const length = (w1 + w3) / 2;
-    const width = (w2 + w4) / 2;
-    return length * width;
-  };
+  // Calculate total area
+  const baseArea = (parseFloat(length) || 0) * (parseFloat(width) || 0);
+  const additionalArea = additionalAreas.reduce((sum, area) => sum + area, 0);
+  const totalArea = baseArea + additionalArea;
+  const essentialCost = totalArea * 90;
+  const premiumCost = totalArea * 100;
+  const luxuryCost = totalArea * 110;
 
-  const area = calculateArea();
-  const essentialCost = area * 90;
-  const premiumCost = area * 100;
-  const luxuryCost = area * 110;
+  // Initialize canvas
+  useEffect(() => {
+    if (!canvasRef.current) return;
+
+    const canvas = new FabricCanvas(canvasRef.current, {
+      width: 500,
+      height: 400,
+      backgroundColor: "#f8f9fa",
+      selection: false,
+    });
+
+    setFabricCanvas(canvas);
+
+    return () => {
+      canvas.dispose();
+    };
+  }, []);
+
+  // Draw base room when dimensions change
+  useEffect(() => {
+    if (!fabricCanvas || !length || !width) return;
+
+    const l = parseFloat(length) || 0;
+    const w = parseFloat(width) || 0;
+
+    if (l === 0 || w === 0) return;
+
+    // Clear and redraw
+    fabricCanvas.clear();
+    fabricCanvas.backgroundColor = "#f8f9fa";
+
+    // Scale to fit canvas (with padding)
+    const padding = 40;
+    const maxWidth = 500 - padding * 2;
+    const maxHeight = 400 - padding * 2;
+    const scale = Math.min(maxWidth / l, maxHeight / w);
+
+    const scaledLength = l * scale;
+    const scaledWidth = w * scale;
+
+    // Draw base room
+    const baseRoom = new Rect({
+      left: padding,
+      top: padding,
+      width: scaledLength,
+      height: scaledWidth,
+      fill: "rgba(59, 130, 246, 0.3)",
+      stroke: "#3b82f6",
+      strokeWidth: 2,
+      selectable: false,
+      evented: false,
+    });
+
+    fabricCanvas.add(baseRoom);
+
+    // Add dimensions text
+    const lengthText = new Text(`${l} ft`, {
+      left: padding + scaledLength / 2,
+      top: padding - 20,
+      fontSize: 14,
+      fill: "#1f2937",
+      selectable: false,
+      evented: false,
+      originX: "center",
+    });
+
+    const widthText = new Text(`${w} ft`, {
+      left: padding - 20,
+      top: padding + scaledWidth / 2,
+      fontSize: 14,
+      fill: "#1f2937",
+      selectable: false,
+      evented: false,
+      originX: "center",
+      angle: -90,
+    });
+
+    fabricCanvas.add(lengthText, widthText);
+    fabricCanvas.renderAll();
+  }, [fabricCanvas, length, width]);
+
+  // Handle drawing
+  useEffect(() => {
+    if (!fabricCanvas || !drawMode) return;
+
+    const handleMouseDown = (e: any) => {
+      if (!e.pointer) return;
+      isDrawingRef.current = true;
+      startPointRef.current = { x: e.pointer.x, y: e.pointer.y };
+    };
+
+    const handleMouseMove = (e: any) => {
+      if (!isDrawingRef.current || !startPointRef.current || !e.pointer) return;
+
+      if (tempRectRef.current) {
+        fabricCanvas.remove(tempRectRef.current);
+      }
+
+      const width = e.pointer.x - startPointRef.current.x;
+      const height = e.pointer.y - startPointRef.current.y;
+
+      tempRectRef.current = new Rect({
+        left: startPointRef.current.x,
+        top: startPointRef.current.y,
+        width: Math.abs(width),
+        height: Math.abs(height),
+        fill: drawMode === "add" ? "rgba(34, 197, 94, 0.3)" : "rgba(239, 68, 68, 0.3)",
+        stroke: drawMode === "add" ? "#22c55e" : "#ef4444",
+        strokeWidth: 2,
+        selectable: false,
+      });
+
+      if (width < 0) tempRectRef.current.left = e.pointer.x;
+      if (height < 0) tempRectRef.current.top = e.pointer.y;
+
+      fabricCanvas.add(tempRectRef.current);
+      fabricCanvas.renderAll();
+    };
+
+    const handleMouseUp = (e: any) => {
+      if (!isDrawingRef.current || !startPointRef.current || !e.pointer) return;
+
+      const drawnWidth = Math.abs(e.pointer.x - startPointRef.current.x);
+      const drawnHeight = Math.abs(e.pointer.y - startPointRef.current.y);
+
+      // Convert canvas pixels back to feet
+      const l = parseFloat(length) || 0;
+      const w = parseFloat(width) || 0;
+      const padding = 40;
+      const maxWidth = 500 - padding * 2;
+      const maxHeight = 400 - padding * 2;
+      const scale = Math.min(maxWidth / l, maxHeight / w);
+
+      const areaInFeet = (drawnWidth / scale) * (drawnHeight / scale);
+
+      if (areaInFeet > 1) {
+        const newArea = drawMode === "add" ? areaInFeet : -areaInFeet;
+        setAdditionalAreas(prev => [...prev, newArea]);
+        toast.success(`${drawMode === "add" ? "Added" : "Removed"} ${areaInFeet.toFixed(2)} sq ft`);
+      }
+
+      isDrawingRef.current = false;
+      startPointRef.current = null;
+      tempRectRef.current = null;
+      setDrawMode(null);
+      fabricCanvas.defaultCursor = "default";
+    };
+
+    fabricCanvas.on("mouse:down", handleMouseDown);
+    fabricCanvas.on("mouse:move", handleMouseMove);
+    fabricCanvas.on("mouse:up", handleMouseUp);
+    fabricCanvas.defaultCursor = "crosshair";
+
+    return () => {
+      fabricCanvas.off("mouse:down", handleMouseDown);
+      fabricCanvas.off("mouse:move", handleMouseMove);
+      fabricCanvas.off("mouse:up", handleMouseUp);
+      fabricCanvas.defaultCursor = "default";
+    };
+  }, [fabricCanvas, drawMode, length, width]);
 
   return (
     <div className="min-h-screen bg-gradient-dark">
@@ -51,173 +207,135 @@ const Calculator = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid lg:grid-cols-1 gap-8">
             {/* Input Section */}
-            <Card className="border-border bg-card/50 backdrop-blur-sm">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <div className="w-8 h-8 rounded-lg bg-gradient-primary flex items-center justify-center">
-                    <CalcIcon className="text-background" size={16} />
-                  </div>
-                  Room Dimensions
-                </CardTitle>
-                <CardDescription>Enter the length of each wall in feet (walls should connect in order)</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="wall1" className="text-sm font-medium flex items-center gap-2">
-                      <span className="w-6 h-6 rounded-full bg-primary/20 text-primary text-xs flex items-center justify-center font-bold">1</span>
-                      North Wall
-                    </Label>
-                    <Input
-                      id="wall1"
-                      type="number"
-                      placeholder="12"
-                      value={wall1}
-                      onChange={(e) => setWall1(e.target.value)}
-                      min="0"
-                      step="0.1"
-                      className="text-lg"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="wall2" className="text-sm font-medium flex items-center gap-2">
-                      <span className="w-6 h-6 rounded-full bg-primary/20 text-primary text-xs flex items-center justify-center font-bold">2</span>
-                      East Wall
-                    </Label>
-                    <Input
-                      id="wall2"
-                      type="number"
-                      placeholder="10"
-                      value={wall2}
-                      onChange={(e) => setWall2(e.target.value)}
-                      min="0"
-                      step="0.1"
-                      className="text-lg"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="wall3" className="text-sm font-medium flex items-center gap-2">
-                      <span className="w-6 h-6 rounded-full bg-primary/20 text-primary text-xs flex items-center justify-center font-bold">3</span>
-                      South Wall
-                    </Label>
-                    <Input
-                      id="wall3"
-                      type="number"
-                      placeholder="9"
-                      value={wall3}
-                      onChange={(e) => setWall3(e.target.value)}
-                      min="0"
-                      step="0.1"
-                      className="text-lg"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="wall4" className="text-sm font-medium flex items-center gap-2">
-                      <span className="w-6 h-6 rounded-full bg-primary/20 text-primary text-xs flex items-center justify-center font-bold">4</span>
-                      West Wall
-                    </Label>
-                    <Input
-                      id="wall4"
-                      type="number"
-                      placeholder="15"
-                      value={wall4}
-                      onChange={(e) => setWall4(e.target.value)}
-                      min="0"
-                      step="0.1"
-                      className="text-lg"
-                    />
-                  </div>
-                </div>
-
-                <div className="p-4 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm font-medium text-muted-foreground">Total Ceiling Area:</span>
-                    <div className="text-right">
-                      <span className="text-3xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                        {area.toFixed(2)}
-                      </span>
-                      <span className="text-sm text-muted-foreground ml-2">sq ft</span>
+            <div className="space-y-6">
+              <Card className="border-border bg-card/50 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-primary flex items-center justify-center">
+                      <CalcIcon className="text-background" size={16} />
+                    </div>
+                    Room Dimensions
+                  </CardTitle>
+                  <CardDescription>Enter your room's length and width in feet</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                      <Label htmlFor="length" className="text-sm font-medium">Length (ft)</Label>
+                      <Input
+                        id="length"
+                        type="number"
+                        placeholder="12"
+                        value={length}
+                        onChange={(e) => setLength(e.target.value)}
+                        min="0"
+                        step="0.1"
+                        className="text-lg"
+                      />
+                    </div>
+                    <div className="space-y-2">
+                      <Label htmlFor="width" className="text-sm font-medium">Width (ft)</Label>
+                      <Input
+                        id="width"
+                        type="number"
+                        placeholder="10"
+                        value={width}
+                        onChange={(e) => setWidth(e.target.value)}
+                        min="0"
+                        step="0.1"
+                        className="text-lg"
+                      />
                     </div>
                   </div>
-                </div>
 
-                <div className="p-4 rounded-lg bg-muted/50 border border-border">
-                  <p className="text-xs text-muted-foreground">
-                    💡 <strong>Tip:</strong> Measure each wall carefully. For irregular rooms, the calculator uses the average of opposite walls to estimate the ceiling area.
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Results Section */}
-            <div className="space-y-4">
-              <div className="text-center mb-4">
-                <h3 className="text-xl font-semibold text-foreground mb-2">Instant Estimates</h3>
-                <p className="text-sm text-muted-foreground">Live calculation based on your room dimensions</p>
-              </div>
-
-              <Card className="border-primary/50 bg-gradient-to-br from-card via-card to-primary/5 backdrop-blur-sm hover:shadow-glow transition-all duration-300">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <h4 className="text-lg font-bold text-foreground">Essential Plan</h4>
-                      <p className="text-xs text-muted-foreground">Basic false ceiling design</p>
+                  <div className="p-4 rounded-xl bg-gradient-to-r from-primary/10 to-accent/10 border border-primary/20">
+                    <div className="space-y-2">
+                      <div className="flex justify-between items-center">
+                        <span className="text-sm font-medium text-muted-foreground">Base Area:</span>
+                        <span className="text-lg font-bold text-foreground">{baseArea.toFixed(2)} sq ft</span>
+                      </div>
+                      {additionalAreas.length > 0 && (
+                        <div className="flex justify-between items-center">
+                          <span className="text-sm font-medium text-muted-foreground">Adjustments:</span>
+                          <span className="text-lg font-bold text-foreground">
+                            {additionalArea > 0 ? '+' : ''}{additionalArea.toFixed(2)} sq ft
+                          </span>
+                        </div>
+                      )}
+                      <div className="pt-2 border-t border-border/50 flex justify-between items-center">
+                        <span className="text-sm font-medium text-muted-foreground">Total Area:</span>
+                        <div className="text-right">
+                          <span className="text-2xl font-bold bg-gradient-primary bg-clip-text text-transparent">
+                            {totalArea.toFixed(2)}
+                          </span>
+                          <span className="text-sm text-muted-foreground ml-2">sq ft</span>
+                        </div>
+                      </div>
                     </div>
-                    <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
-                      <span className="text-xs font-medium text-primary">90 Rs/sq ft</span>
-                    </div>
-                  </div>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                      {essentialCost.toFixed(0)}
-                    </span>
-                    <span className="text-lg text-muted-foreground">Rs</span>
                   </div>
                 </CardContent>
               </Card>
 
-              <Card className="border-primary/50 bg-gradient-to-br from-card via-card to-accent/5 backdrop-blur-sm hover:shadow-glow transition-all duration-300">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <h4 className="text-lg font-bold text-foreground">Premium Plan</h4>
-                      <p className="text-xs text-muted-foreground">Enhanced ceiling solutions</p>
-                    </div>
-                    <div className="px-3 py-1 rounded-full bg-accent/10 border border-accent/20">
-                      <span className="text-xs font-medium text-accent">100 Rs/sq ft</span>
-                    </div>
+              {/* Visual Canvas */}
+              <Card className="border-border bg-card/50 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-sm font-medium">Visual Area Editor</CardTitle>
+                  <CardDescription>Draw to add or remove areas from calculation</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex gap-2">
+                    <Button
+                      onClick={() => setDrawMode("add")}
+                      variant={drawMode === "add" ? "default" : "outline"}
+                      size="sm"
+                      className="flex-1"
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Add Area
+                    </Button>
+                    <Button
+                      onClick={() => setDrawMode("remove")}
+                      variant={drawMode === "remove" ? "default" : "outline"}
+                      size="sm"
+                      className="flex-1"
+                    >
+                      <Minus className="w-4 h-4 mr-2" />
+                      Remove Area
+                    </Button>
                   </div>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                      {premiumCost.toFixed(0)}
-                    </span>
-                    <span className="text-lg text-muted-foreground">Rs</span>
-                  </div>
-                </CardContent>
-              </Card>
 
-              <Card className="border-primary/50 bg-gradient-to-br from-card via-card to-primary/10 backdrop-blur-sm hover:shadow-glow transition-all duration-300">
-                <CardContent className="p-6">
-                  <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <h4 className="text-lg font-bold text-foreground">Luxury Plan</h4>
-                      <p className="text-xs text-muted-foreground">Premium ceiling designs</p>
-                    </div>
-                    <div className="px-3 py-1 rounded-full bg-primary/10 border border-primary/20">
-                      <span className="text-xs font-medium text-primary">110 Rs/sq ft</span>
-                    </div>
+                  <div className="border border-border rounded-lg overflow-hidden bg-muted/20">
+                    <canvas ref={canvasRef} />
                   </div>
-                  <div className="flex items-baseline gap-2">
-                    <span className="text-4xl font-bold bg-gradient-primary bg-clip-text text-transparent">
-                      {luxuryCost.toFixed(0)}
-                    </span>
-                    <span className="text-lg text-muted-foreground">Rs</span>
-                  </div>
+
+                  {drawMode && (
+                    <div className="p-3 rounded-lg bg-primary/10 border border-primary/20">
+                      <p className="text-xs text-foreground">
+                        <strong>Active:</strong> Click and drag on the canvas to {drawMode} area
+                      </p>
+                    </div>
+                  )}
+
+                  {additionalAreas.length > 0 && (
+                    <Button
+                      onClick={() => {
+                        setAdditionalAreas([]);
+                        toast.success("Adjustments cleared");
+                      }}
+                      variant="outline"
+                      size="sm"
+                      className="w-full"
+                    >
+                      Clear All Adjustments
+                    </Button>
+                  )}
                 </CardContent>
               </Card>
             </div>
+
+            
           </div>
 
           <div className="mt-8 p-6 bg-card/30 rounded-xl border border-border">
