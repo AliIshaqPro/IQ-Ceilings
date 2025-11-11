@@ -227,7 +227,7 @@ const Calculator = () => {
         luxuryCost={luxuryCost}
       />
       
-      <div className="relative py-24 px-4 sm:px-6 pt-32">
+      <div className="relative py-24 px-4 sm:px-6 pt-44">
         <div className="max-w-4xl mx-auto w-full">
           <div className="text-center mb-12">
             <div className="w-16 h-16 bg-gradient-primary rounded-2xl flex items-center justify-center mx-auto mb-6">
@@ -340,7 +340,7 @@ const Calculator = () => {
                     </Button>
                   </div>
 
-                  <div className="border border-border rounded-lg overflow-hidden bg-muted/20 w-full">
+                  <div className="border border-border rounded-lg overflow-hidden bg-white w-full p-4">
                     <canvas ref={canvasRef} className="w-full h-auto touch-none" />
                   </div>
 
