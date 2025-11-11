@@ -34,16 +34,37 @@ const Calculator = () => {
   useEffect(() => {
     if (!canvasRef.current) return;
 
+    const container = canvasRef.current.parentElement;
+    const containerWidth = container?.clientWidth || 600;
+    const canvasWidth = Math.min(containerWidth - 32, 800);
+    const canvasHeight = canvasWidth * 0.75; // 4:3 aspect ratio
+
     const canvas = new FabricCanvas(canvasRef.current, {
-      width: 600,
-      height: 450,
+      width: canvasWidth,
+      height: canvasHeight,
       backgroundColor: "#f8f9fa",
       selection: true,
     });
 
     setFabricCanvas(canvas);
 
+    // Handle window resize
+    const handleResize = () => {
+      const newContainerWidth = container?.clientWidth || 600;
+      const newCanvasWidth = Math.min(newContainerWidth - 32, 800);
+      const newCanvasHeight = newCanvasWidth * 0.75;
+      
+      canvas.setDimensions({
+        width: newCanvasWidth,
+        height: newCanvasHeight,
+      });
+      canvas.renderAll();
+    };
+
+    window.addEventListener('resize', handleResize);
+
     return () => {
+      window.removeEventListener('resize', handleResize);
       canvas.dispose();
     };
   }, []);
@@ -63,8 +84,10 @@ const Calculator = () => {
 
     // Scale to fit canvas (with padding)
     const padding = 40;
-    const maxWidth = 600 - padding * 2;
-    const maxHeight = 450 - padding * 2;
+    const canvasWidth = fabricCanvas.getWidth();
+    const canvasHeight = fabricCanvas.getHeight();
+    const maxWidth = canvasWidth - padding * 2;
+    const maxHeight = canvasHeight - padding * 2;
     const scale = Math.min(maxWidth / l, maxHeight / w);
 
     const scaledLength = l * scale;
@@ -159,8 +182,10 @@ const Calculator = () => {
       const l = parseFloat(length) || 0;
       const w = parseFloat(width) || 0;
       const padding = 40;
-      const maxWidth = 600 - padding * 2;
-      const maxHeight = 450 - padding * 2;
+      const canvasWidth = fabricCanvas.getWidth();
+      const canvasHeight = fabricCanvas.getHeight();
+      const maxWidth = canvasWidth - padding * 2;
+      const maxHeight = canvasHeight - padding * 2;
       const scale = Math.min(maxWidth / l, maxHeight / w);
 
       const areaInFeet = (drawnWidth / scale) * (drawnHeight / scale);
@@ -315,8 +340,8 @@ const Calculator = () => {
                     </Button>
                   </div>
 
-                  <div className="border border-border rounded-lg overflow-hidden bg-muted/20 w-full flex justify-center">
-                    <canvas ref={canvasRef} className="max-w-full h-auto touch-none" style={{ maxWidth: '100%' }} />
+                  <div className="border border-border rounded-lg overflow-hidden bg-muted/20 w-full">
+                    <canvas ref={canvasRef} className="w-full h-auto touch-none" />
                   </div>
 
                   {drawMode && (
