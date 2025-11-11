@@ -270,7 +270,49 @@ const Index = () => {
           )}
         </div>
       </div>
+      {/* Our Team Section */}
+      <div className="relative py-16 px-6 bg-card/30">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Our <span className="bg-gradient-primary bg-clip-text text-transparent">Services</span>
+            </h2>
+            <div className="w-20 h-1 bg-gradient-primary mx-auto mb-6 rounded-full" />
+            <p className="text-muted-foreground text-base max-w-2xl mx-auto">
+              Services we offer to bring your ceiling visions to life
+            </p>
+          </div>
 
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {[
+              { img: team1, name: "Ahmad Khan", role: "Lead Designer" },
+              { img: team2, name: "Fatima Ali", role: "Senior Architect" },
+              { img: team3, name: "Hassan Shah", role: "Project Manager" },
+              { img: team4, name: "Ayesha Malik", role: "Design Specialist" },
+            ].map((member, index) => (
+              <div
+                key={index}
+                className="group relative overflow-hidden rounded-xl border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-glow"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="aspect-square overflow-hidden">
+                  <img
+                    src={member.img}
+                    alt={member.name}
+                    className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  />
+                </div>
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                  <div>
+                    <h4 className="font-bold text-foreground text-base mb-0.5">{member.name}</h4>
+                    <p className="text-xs text-primary">{member.role}</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
       {/* Testimonials Section */}
       <TestimonialSlider />
 
