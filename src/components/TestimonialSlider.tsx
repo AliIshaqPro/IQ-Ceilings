@@ -72,11 +72,11 @@ const TestimonialSlider = () => {
         </div>
 
         <div className="overflow-hidden" ref={emblaRef}>
-          <div className="flex gap-4 md:gap-6">
+          <div className="flex gap-6 md:gap-8">
             {testimonials.map((testimonial, index) => (
               <div
                 key={index}
-                className="flex-[0_0_100%] sm:flex-[0_0_calc(50%-12px)] lg:flex-[0_0_calc(33.333%-16px)] min-w-0"
+                className="flex-[0_0_calc(100%-0px)] sm:flex-[0_0_calc(50%-16px)] lg:flex-[0_0_calc(33.333%-21px)] min-w-0"
               >
                 <div className="relative p-6 rounded-xl bg-card border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-glow h-full">
                   <Quote className="absolute top-4 right-4 text-primary/20" size={32} />

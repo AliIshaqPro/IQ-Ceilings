@@ -128,7 +128,7 @@ const Index = () => {
                 >
                   <div className="relative overflow-hidden bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl transition-all duration-500 hover:border-primary/50 hover:shadow-glow animate-scale-in h-full flex flex-col min-h-[400px] sm:min-h-[420px]">
                     {/* Image Section with Overlay */}
-                    <div className="relative h-48 sm:h-52 md:h-80 overflow-hidden">
+                    <div className="relative h-64 sm:h-52 md:h-80 overflow-hidden">
                       <img 
                         src={getImageForPlan(plan)} 
                         alt={`${plan.title} ceiling designs`}
@@ -270,7 +270,7 @@ const Index = () => {
           )}
         </div>
       </div>
-      {/* Our Team Section */}
+      {/* Services Section */}
       <div className="relative py-16 px-6 bg-card/30">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
@@ -283,13 +283,15 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
             {[
-              { img: team1, name: "Ahmad Khan", role: "Lead Designer" },
-              { img: team2, name: "Fatima Ali", role: "Senior Architect" },
-              { img: team3, name: "Hassan Shah", role: "Project Manager" },
-              { img: team4, name: "Ayesha Malik", role: "Design Specialist" },
-            ].map((member, index) => (
+              { img: "http://iqfalseceilings.site/wp-content/uploads/2025/11/95e11dcc98f84313496b01e2f996b4ff.jpg", name: "Custom Designs", role: "Tailored Solutions" },
+              { img: "http://iqfalseceilings.site/wp-content/uploads/2025/11/1f0a58809f6f0b16dbeaff5bed13a4c2.jpg", name: "Installation", role: "Expert Fitting" },
+              { img: "http://iqfalseceilings.site/wp-content/uploads/2025/11/3ddc4c35b97df8b534516d461f74a0a5.jpg", name: "Renovation", role: "Modern Upgrades" },
+              { img: "http://iqfalseceilings.site/wp-content/uploads/2025/11/ebe0cb099b287f45bee757dede5e7706.jpg", name: "Consultation", role: "Expert Advice" },
+              { img: "http://iqfalseceilings.site/wp-content/uploads/2025/11/751af1ac8f5723f907c9b9d47deccf55-2.jpg", name: "Maintenance", role: "Ongoing Support" },
+              { img: "http://iqfalseceilings.site/wp-content/uploads/2025/11/advanced-1-jrMwXQ1D.jpg", name: "Lighting Integration", role: "Smart Solutions" },
+            ].map((service, index) => (
               <div
                 key={index}
                 className="group relative overflow-hidden rounded-xl border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-glow"
@@ -297,15 +299,15 @@ const Index = () => {
               >
                 <div className="aspect-square overflow-hidden">
                   <img
-                    src={member.img}
-                    alt={member.name}
+                    src={service.img}
+                    alt={service.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                 </div>
                 <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
                   <div>
-                    <h4 className="font-bold text-foreground text-base mb-0.5">{member.name}</h4>
-                    <p className="text-xs text-primary">{member.role}</p>
+                    <h4 className="font-bold text-foreground text-base mb-0.5">{service.name}</h4>
+                    <p className="text-xs text-primary">{service.role}</p>
                   </div>
                 </div>
               </div>
@@ -328,14 +330,20 @@ const Index = () => {
           
           <div className="grid md:grid-cols-2 gap-12 items-center">
             {/* Image */}
-            <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-primary rounded-2xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity duration-300" />
-              <div className="relative overflow-hidden rounded-2xl border border-border">
-                <img
-                  src={team1}
-                  alt="IQ Ceiling Designs showcase"
-                  className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
-                />
+            <div className="flex flex-col items-center md:items-start">
+              <div className="relative group max-w-sm w-full">
+                <div className="absolute inset-0 bg-gradient-primary rounded-2xl blur-xl opacity-20 group-hover:opacity-30 transition-opacity duration-300" />
+                <div className="relative overflow-hidden rounded-2xl border border-border">
+                  <img
+                    src="http://iqfalseceilings.site/wp-content/uploads/2025/11/IMG-20230407-WA0047.jpg"
+                    alt="Muhammad Ishaq - Owner of IQ Ceiling Designs"
+                    className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                  />
+                </div>
+              </div>
+              <div className="text-center md:text-left mt-4">
+                <h4 className="font-display text-xl font-bold text-foreground">Muhammad Ishaq</h4>
+                <p className="text-sm text-primary mt-1">Owner</p>
               </div>
             </div>
 
@@ -394,12 +402,34 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          {/* Marketing and Project Manager - Featured */}
+          <div className="max-w-md mx-auto mb-8">
+            <div className="group relative overflow-hidden rounded-xl border-2 border-primary/30 hover:border-primary/60 transition-all duration-300 hover:shadow-glow">
+              <div className="aspect-square overflow-hidden">
+                <img
+                  src="http://iqfalseceilings.site/wp-content/uploads/2025/11/IMG-20251108-WA0037.jpg"
+                  alt="Ali Ishaq"
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-6">
+                <div>
+                  <h4 className="font-bold text-foreground text-xl mb-1">Ali Ishaq</h4>
+                  <p className="text-sm text-primary">Marketing and Project Manager</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Workers Team */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
             {[
-              { img: team1, name: "Ahmad Khan", role: "Lead Designer" },
-              { img: team2, name: "Fatima Ali", role: "Senior Architect" },
-              { img: team3, name: "Hassan Shah", role: "Project Manager" },
-              { img: team4, name: "Ayesha Malik", role: "Design Specialist" },
+              { img: "http://iqfalseceilings.site/wp-content/uploads/2025/11/Abdullah-Younsa.png", name: "Abdullah Younas" },
+              { img: "http://iqfalseceilings.site/wp-content/uploads/2025/11/Ali-ceiling.png", name: "Ali" },
+              { img: "http://iqfalseceilings.site/wp-content/uploads/2025/11/Ahmed.png", name: "Ahmed" },
+              { img: "http://iqfalseceilings.site/wp-content/uploads/2025/11/Gemini_Generated_Image_lszs06lszs06lszs.png", name: "Samiullah" },
+              { img: "http://iqfalseceilings.site/wp-content/uploads/2025/11/Adil.png", name: "Adil" },
+              { img: "http://iqfalseceilings.site/wp-content/uploads/2025/11/Gemini_Generated_Image_xv9d2oxv9d2oxv9d.png", name: "Nabeel" },
             ].map((member, index) => (
               <div
                 key={index}
@@ -413,10 +443,10 @@ const Index = () => {
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                   />
                 </div>
-                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-4">
+                <div className="absolute inset-0 bg-gradient-to-t from-background via-background/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end p-3">
                   <div>
-                    <h4 className="font-bold text-foreground text-base mb-0.5">{member.name}</h4>
-                    <p className="text-xs text-primary">{member.role}</p>
+                    <h4 className="font-bold text-foreground text-sm mb-0.5">{member.name}</h4>
+                    <p className="text-xs text-primary">Team Member</p>
                   </div>
                 </div>
               </div>
