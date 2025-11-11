@@ -19,6 +19,8 @@ import team4 from "@/assets/medium-4.jpg";
 import luxuryHero from "@/assets/luxury-hero.jpeg";
 import premiumHero from "@/assets/premium-hero.jpg";
 import essentialHero from "@/assets/essential-hero.jpg";
+import factory1 from "@/assets/factory-1.jpg";
+import factory2 from "@/assets/factory-2.jpg";
 
 const Index = () => {
   const [pricingPlans, setPricingPlans] = useState<PricingPlan[]>([]);
@@ -394,7 +396,7 @@ const Index = () => {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6 mb-10">
+          <div className="grid md:grid-cols-2 gap-6">
             <div className="flex items-start gap-3 p-5 rounded-xl bg-card border border-border hover:border-primary/50 transition-all duration-300">
               <div className="w-10 h-10 rounded-full bg-gradient-primary flex items-center justify-center flex-shrink-0">
                 <MapPin className="text-background" size={20} />
@@ -419,8 +421,48 @@ const Index = () => {
               </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      {/* Where Are We Located Section */}
+      <div className="relative py-16 px-6 bg-card/30">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-4">
+              Where Are We <span className="bg-gradient-primary bg-clip-text text-transparent">Located</span>
+            </h2>
+            <div className="w-20 h-1 bg-gradient-primary mx-auto mb-6 rounded-full" />
+            <p className="text-muted-foreground text-base max-w-2xl mx-auto">
+              Visit our office and experience our craftsmanship firsthand
+            </p>
+          </div>
 
           <GoogleMap />
+
+          {/* Factory Images */}
+          <div className="grid md:grid-cols-2 gap-6 mt-10">
+            <div className="group relative overflow-hidden rounded-xl border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-glow">
+              <img
+                src={factory1}
+                alt="IQ Ceilings Manufacturing Facility"
+                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent flex items-end p-5">
+                <h3 className="font-display text-lg font-semibold text-foreground">Our Production Facility</h3>
+              </div>
+            </div>
+
+            <div className="group relative overflow-hidden rounded-xl border border-border hover:border-primary/50 transition-all duration-300 hover:shadow-glow">
+              <img
+                src={factory2}
+                alt="IQ Ceilings Workshop"
+                className="w-full h-64 object-cover group-hover:scale-110 transition-transform duration-500"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-background/80 via-transparent to-transparent flex items-end p-5">
+                <h3 className="font-display text-lg font-semibold text-foreground">Our Workshop</h3>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
